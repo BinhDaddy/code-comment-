@@ -1,0 +1,60 @@
+VectorAssembler:
+from pyspark.sql.types import StructType, StructField, IntegerType, DoubleType
+from pyspark.sql import SparkSession
+from pyspark.ml.feature import VectorAssembler
+
+# Khởi tạo SparkSession
+spark = SparkSession.builder.appName("VectorAssemblerDemo").getOrCreate()
+
+# Định nghĩa schema với kiểu dữ liệu cho mỗi cột
+schema = StructType([
+    StructField("id", IntegerType(), True),
+    StructField("feature1", DoubleType(), True),
+    StructField("feature2", DoubleType(), True),
+    StructField("feature3", DoubleType(), True)
+])
+
+# Đọc dữ liệu từ tệp txt với schema đã định nghĩa
+df = spark.read.option("header", "true").schema(schema).csv("data.txt")
+
+# Sử dụng VectorAssembler để gom các đặc trưng vào một cột "features"
+feature_cols = ["feature1", "feature2", "feature3"]
+assembler = VectorAssembler(inputCols=feature_cols, outputCol="features")
+assembled_data = assembler.transform(df)
+
+# Hiển thị kết quả
+assembled_data.select("id", "features").show()
+
+# Dừng SparkSession
+spark.stop()
+Tệp data chứa dữ liệu:
+id,feature1,feature2,feature3
+1,0.1,0.2,0.3
+2,0.4,0.5,0.6
+
+
+StringIndexer
+from pyspark.sql import SparkSession
+from pyspark.ml.feature import StringIndexer
+
+# Khởi tạo SparkSession
+spark = SparkSession.builder.appName("StringIndexerDemo").getOrCreate()
+
+# Đọc dữ liệu từ tệp txt vào DataFrame
+df = spark.read.option("header", "true").csv("data.txt")
+
+# Sử dụng StringIndexer để biến đổi cột "category"
+indexer = StringIndexer(inputCol="category", outputCol="categoryIndex")
+indexed_data = indexer.fit(df).transform(df)
+
+# Hiển thị kết quả
+indexed_data.select("id", "categoryIndex").show()
+
+# Dừng SparkSession
+spark.stop()
+Tệp data 2 chứa dữ liệu:
+id,category
+1,cat
+2,dog
+3,fish
+4,bird
