@@ -1,0 +1,16 @@
+Tạo keyspace và bảng:
+CREATE KEYSPACE namnguyen_db
+WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+ 
+USE namnguyen_db;
+ 
+CREATE TABLE text_table (
+  name TEXT PRIMARY KEY,
+  surname TEXT,
+  email TEXT
+);
+Chèn dữ liệu:
+INSERT INTO text_table (name, surname, email)
+VALUES ('Nam', 'Ngoc', 'ngocnam123@email.com');
+Truy vấn dữ liệu:
+SELECT * FROM text_table WHERE name = 'Nam';
