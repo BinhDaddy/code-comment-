@@ -1,0 +1,252 @@
+ Một số transformation:
+Distinct:
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDDistinctDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách số nguyên có giá trị trùng lặp
+data = [1, 2, 3, 2, 4, 5, 5, 6, 7, 8, 9, 10]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức distinct để loại bỏ các giá trị trùng lặp
+distinct_rdd = rdd.distinct()
+
+# In kết quả
+print("Distinct Values:", distinct_rdd.collect())
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+Filter
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDFilterDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách số nguyên
+data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức filter để tìm các số lẻ
+filtered_rdd = rdd.filter(lambda x: x % 2 != 0)
+
+# In kết quả
+print("Filtered RDD (Odd numbers):", filtered_rdd.collect())
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+
+Map:
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDMapDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách số nguyên
+data = [1, 2, 3, 4, 5]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức map để tạo một RDD mới bằng cách tăng mỗi số lên 10
+mapped_rdd = rdd.map(lambda x: x + 10)
+
+# In kết quả
+print("Mapped RDD (added 10 to each element):", mapped_rdd.collect())
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+Flatmap:
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDFlatMapDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách các chuỗi
+data = ["TOI LA NAM", "TOI YEU BIGDATA"]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức flatMap để tạo một RDD mới bằng việc tách các từ trong mỗi chuỗi
+flat_mapped_rdd = rdd.flatMap(lambda line: line.split(" "))
+
+# In kết quả
+print("Flat-Mapped RDD (split by space):", flat_mapped_rdd.collect())
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+sortBy
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDSortByDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách các số nguyên
+data = [4, 1, 9, 2, 7, 5, 3, 8, 6]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức sortBy để sắp xếp các số theo thứ tự tăng dần
+sorted_rdd = rdd.sortBy(lambda x: x, ascending=True)
+
+# In kết quả
+print("Sorted RDD (ascending order):", sorted_rdd.collect())
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+
+randomSplit: 
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDRandomSplitDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách các số nguyên
+data = list(range(1, 11))
+rdd = sc.parallelize(data)
+
+# Định nghĩa mảng trọng số cho các split
+weights = [0.4, 0.6]
+
+# Sử dụng phương thức randomSplit để chia RDD thành các RDD con theo trọng số
+splits = rdd.randomSplit(weights, seed=42)
+
+# In kết quả
+print("Split 1:", splits[0].collect())
+print("Split 2:", splits[1].collect())
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+
+
+
+
+
+
+
+ Một số action:
+Reduce:
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDReduceDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách số nguyên
+data = [1, 2, 3, 4, 5]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức reduce để tính tổng của tất cả các số trong RDD
+total_sum = rdd.reduce(lambda x, y: x + y)
+
+# In kết quả
+print("Total Sum:", total_sum)
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+
+Count:
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDCountDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách số nguyên
+data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức count để đếm số dòng trong RDD
+count = rdd.count()
+
+# In kết quả
+print("Count:", count)
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+
+first:
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDFirstDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách số nguyên
+data = [1, 2, 3, 4, 5]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức first để lấy giá trị đầu tiên từ RDD
+first_value = rdd.first()
+
+# In kết quả
+print("First Value:", first_value)
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+
+max và min:
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDMaxMinDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách số nguyên
+data = [1, 10, 5, 3, 8, 2, 9]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức max để lấy giá trị lớn nhất từ RDD
+max_value = rdd.max()
+
+# Sử dụng phương thức min để lấy giá trị nhỏ nhất từ RDD
+min_value = rdd.min()
+
+# In kết quả
+print("Max Value:", max_value)
+print("Min Value:", min_value)
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+
+Take:
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDTakeDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách số nguyên
+data = [3, 6, 2, 8, 1, 9, 4, 5, 7, 10]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức take để lấy 3 giá trị đầu tiên từ RDD
+first_3_values = rdd.take(3)
+
+# In kết quả
+print("Take - First 3 Values:", first_3_values)
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
+
+Top:
+from pyspark.sql import SparkSession
+
+# Tạo một SparkSession
+spark = SparkSession.builder.appName("RDDTopDemo").getOrCreate()
+sc = spark.sparkContext
+
+# Tạo một RDD từ danh sách số nguyên
+data = [3, 6, 2, 8, 1, 9, 4, 5, 7, 10]
+rdd = sc.parallelize(data)
+
+# Sử dụng phương thức top để lấy 3 giá trị lớn nhất từ RDD
+top_3_values = rdd.top(3)
+
+# In kết quả
+print("Top - Top 3 Values (Largest):", top_3_values)
+
+# Kết thúc phiên làm việc với Spark
+spark.stop()
